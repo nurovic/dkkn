@@ -1,25 +1,16 @@
-import { Routes, Route, Outlet } from 'react-router-dom';
-import { Suspense, lazy } from 'react';
-
-const Loading = () => (
-  <div className="flex items-center justify-center min-h-screen">
-    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-gray-900"></div>
-  </div>
-);
-
-const Home = lazy(() => import('../pages/Home'));
-const Login = lazy(() => import('../pages/auth/Login'));
-const Register = lazy(() => import('../pages/auth/Register'));
+import { Routes, Route, Navigate } from 'react-router-dom';
+import { Suspense } from 'react';
+import LoadingFallback from './components/LoadingFallback';
+import publicRoutes from './publicRoutes';
+import protectedRoutes from './protectedRoutes';    
 
 const AppRoutes = () => {
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<LoadingFallback />}>
       <Routes>
-        <Route path="/" element={<Outlet />}>
-          <Route index element={<Home />} />
-          <Route path="login" element={<Login />} />
-          <Route path="register" element={<Register />} />
-        </Route>
+        {publicRoutes}
+        {protectedRoutes}
+        <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
     </Suspense>
   );
