@@ -1,8 +1,11 @@
 export interface Product {
-  id: number;
-  name: string;
-  brand: string;
-  price: number;
-  oldPrice?: number;
-  image: string;
+  _id: string,
+  name: string,
+  description: string,
+  price: number,
+  category: string,
+  inStock: boolean,
+  createdAt: string,
+  __v: number,
+  isFavorite: boolean
 } 
