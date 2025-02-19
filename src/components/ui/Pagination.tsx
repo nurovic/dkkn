@@ -1,4 +1,4 @@
-import type { Pagination } from "../../types/pagination";
+import type { Pagination } from "../../types/product";
 
 interface PaginationProps {
   pagination: Pagination;
@@ -6,7 +6,7 @@ interface PaginationProps {
 }
 
 const Pagination = ({ pagination, onPageChange }: PaginationProps) => {
-  console.log(pagination,"pagination")
+  console.log(pagination, "pagination");
   return (
     <div className="flex justify-center mt-8">
       <div className="flex gap-2">

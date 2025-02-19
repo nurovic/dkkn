@@ -1,16 +1,11 @@
-import ProductFilters from '../components/products/ProductFilters';
-import { useQuery } from "@tanstack/react-query";
-import { GetProductList } from '../service/ProductService';
-import ProductGrid from '../components/products/ProductGrid';
-import Pagination from '../components/ui/Pagination';
-const Products = () => {
+import ProductFilters from "../components/products/ProductFilters";
+import ProductGrid from "../components/products/ProductGrid";
+import Pagination from "../components/ui/Pagination";
+import { useProducts } from "../hooks/useProducts";
 
-  const { data: products } = useQuery({
-    queryKey: ["products"],
-    queryFn: () => GetProductList(),
-  });
-  console.log(products);
-  
+const Products: React.FC = () => {
+  const { data, isLoading, error } = useProducts();
+
   const handleAddToCart = (id: string) => {
     console.log(`Added to cart: ${id}`);
   };
@@ -20,32 +15,31 @@ const Products = () => {
   };
 
   const handlePageChange = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  if (isLoading) return <div className="min-h-screen flex items-center justify-center">Loading...</div>;
+  if (error) return <div className="min-h-screen flex items-center justify-center text-red-500">Error: {error.message}</div>;
 
   return (
     <div className="container mx-auto px-4 py-6">
       <div className="flex gap-6">
         <ProductFilters />
-        {
-          
-            <div className="flex-1">
-          <ProductGrid 
-            products={products?.products}
+        <div className="flex-1">
+          <ProductGrid
+            products={data?.products}
             onAddToCart={handleAddToCart}
             onAddToFavorites={handleAddToFavorites}
-            />
+          />
 
-          <Pagination 
-            pagination={products?.pagination}
+          <Pagination
+            pagination={data?.pagination}
             onPageChange={handlePageChange}
-            />
+          />
         </div>
-            }
       </div>
     </div>
   );
 };
 
-export default Products; 
+export default Products;
