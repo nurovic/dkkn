@@ -1,12 +1,24 @@
 import service from "./baseUrl";
-import type { ProductList } from "../types/product";
+import type { ProductFilters, ProductList } from "../types/product";
 
-export const GetProductList = async (): Promise<ProductList> => {
-    const response = await service.get("/products");
-    const products: ProductList = response.data;
+export const GetProductList = async (
+  filters: ProductFilters
+): Promise<ProductList> => {
+  let url: string = "/products";
 
-    return {
-        products: products.products || [],
-        pagination: products.pagination 
-    }
-};    
+  if (filters?.page) {
+    url += `?page=${filters.page}&limit=20`;
+  }
+
+  if (filters?.category) {
+    url += `&category=${filters.category}`;
+  }
+
+  const response = await service.get(url);
+  const products: ProductList = response.data;
+
+  return {
+    products: products.products || [],
+    pagination: products.pagination
+  };
+};

@@ -1,14 +1,18 @@
+import { Category } from "./category";
+
 export interface Product {
   _id: string;
   name: string;
   description: string;
   price: number;
-  category: string;
+  category: Category;
   inStock: boolean;
   createdAt: string;
+  slug: string;
   __v: number;
   isFavorite: boolean;
 }
+
 export interface Pagination {
   hasMore: boolean;
   limit: number;
@@ -20,4 +24,12 @@ export interface Pagination {
 export interface ProductList {
   products: Product[] | [];
   pagination: Pagination;
+}
+
+export interface ProductFilters {
+  keyword?: string;
+  category?: string;
+  page?: number;
+  limit?: number;
+  inStock?: boolean;
 }

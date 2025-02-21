@@ -1,10 +1,13 @@
 import { FiHeart } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { Category } from '../../types/category';
 
 interface ProductCardProps {
   _id: string;
   name: string;
+  slug: string;
   price: number;
+  category: Category
   onAddToCart: (_id: string) => void;
   onAddToFavorites: (_id: string) => void;
 }
@@ -13,6 +16,7 @@ const ProductCard = ({
   _id, 
   name, 
   price, 
+  category,
   onAddToCart, 
   onAddToFavorites 
 }: ProductCardProps) => {
@@ -37,23 +41,12 @@ const ProductCard = ({
         >
           <FiHeart size={20} />
         </button>
-        {
-          /*    
-          <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity">
-          <button className="absolute bottom-4 left-1/2 -translate-x-1/2 bg-white text-gray-800 px-4 py-2 rounded-lg font-medium">
-            Hızlı Bakış
-          </button>
-        </div>
-          */
-        }
       </Link>
       <div className="p-4">
         <h3 className="font-medium mb-1 line-clamp-2">{name}</h3>
-          {
-            /*  
-        <div className="text-sm text-gray-500 mb-2"></div>
-          */
-          }
+         
+        <div className="text-sm text-gray-500 mb-2">{category.name} </div>
+   
         <div className="flex items-center gap-2 mb-3">
           <span className="text-lg font-bold text-orange-500">₺{price.toLocaleString()}</span>
         </div>
