@@ -7,7 +7,7 @@ export const GetProductList = async (
   let url: string = "/products";
 
   if (filters?.page) {
-    url += `?page=${filters.page}&limit=20`;
+    url += `?page=${filters.page}`;
   }
 
   if (filters?.category) {

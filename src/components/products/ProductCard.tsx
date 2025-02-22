@@ -7,6 +7,7 @@ interface ProductCardProps {
   name: string;
   slug: string;
   price: number;
+  isFavorite: boolean;
   category: Category;
   onAddToCart: (_id: string) => void;
   onAddToFavorites: (_id: string) => void;
@@ -17,9 +18,11 @@ const ProductCard = ({
   name,
   price,
   category,
+  isFavorite,
   onAddToCart,
   onAddToFavorites
 }: ProductCardProps) => {
+  console.log(`ProductCard Rerendered: ${name}`);
   return (
     <div className="bg-white rounded-lg shadow-sm overflow-hidden group">
       <Link to={`/products/${_id}`} className="relative block">
@@ -38,7 +41,7 @@ const ProductCard = ({
             onAddToFavorites(_id);
           }}
         >
-          <FiHeart size={20} />
+          <FiHeart size={20} color={isFavorite ? "red" : ''} fill={isFavorite ? "red" : '#fff'} />
         </button>
       </Link>
       <div className="p-4">

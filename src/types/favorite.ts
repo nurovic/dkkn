@@ -6,3 +6,8 @@ export interface FavoriteItem {
   oldPrice?: number;
   image: string;
 } 
+
+export interface FavoriteToggleType {
+  productId: string
+  userId: string
+}

@@ -25,7 +25,6 @@ export const useProducts = () => {
     placeholderData: (previousData) =>
       previousData ?? { products: [], pagination: defaultPagination }
   });
-
   return {
     ...query,
     data: query.data ?? { products: [], pagination: defaultPagination }
