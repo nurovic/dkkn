@@ -1,6 +1,6 @@
 import { memo } from "react";
-import { useSelectedCategory } from "../../hooks/useCategoryList";
 import type { Pagination } from "../../types/product";
+import { useProductFilters } from "../../store/Product";
 
 interface PaginationProps {
   pagination: Pagination;
@@ -8,18 +8,25 @@ interface PaginationProps {
 
 const Pagination = ({ pagination }: PaginationProps) => {
   console.log("Pagination Rerendered");
+  const { setFilters } = useProductFilters();
 
-  const {handleSelectedCategory} = useSelectedCategory();
 
   const handlePageChange = (page: number) => {
-    handleSelectedCategory("page", page.toString());
-  };
-  const onPageChange = (direction: "prev" | "next") => {
-    const newPage = direction === "prev" ? pagination.page - 1 : pagination.page + 1;
+    console.log("Page Change PAGINATION", );
+    if (pagination.page === page) return;
+    setFilters({ ["page"]: page });
 
-  handleSelectedCategory("page", newPage.toString());
-  window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const onPageChange = (direction: "prev" | "next") => {
+
+    const newPage = direction === "prev" ? pagination.page - 1 : pagination.page + 1;
+    setFilters({ ["page"]: newPage });
+
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
   return (
     <div className="flex justify-center mt-8">
       <div className="flex gap-2">
@@ -55,4 +62,7 @@ const Pagination = ({ pagination }: PaginationProps) => {
   );
 };
 
-export default memo(Pagination); 
+export default memo(Pagination, (prevProps, nextProps) => {
+  return prevProps.pagination.page === nextProps.pagination.page &&
+         prevProps.pagination.totalPages === nextProps.pagination.totalPages;
+});

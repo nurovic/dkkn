@@ -1,19 +1,19 @@
 import ProductGrid from "./ProductGrid";
 import Pagination from "../ui/Pagination";
 import { useProducts } from "../../hooks/useProducts";
-
+import { useCallback } from "react";
 export default function ProductList() {
+    console.log("ProductList Rerendered");
   const { data, isLoading, error } = useProducts();
 
-    console.log("ProductList Rerendered");
 
-  const handleAddToCart = (id: string) => {
+  const handleAddToCart = useCallback((id: string) => {
     console.log(`Added to cart: ${id}`);
-  };
+  }, []);
 
-  const handleAddToFavorites = (id: string) => {
+  const handleAddToFavorites = useCallback((id: string) => {
     console.log(`Added to favorites: ${id}`);
-  };
+  }, []);
 
   if (error)
     return (

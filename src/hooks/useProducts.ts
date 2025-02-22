@@ -2,31 +2,32 @@ import { useQuery } from "@tanstack/react-query";
 import { GetProductList } from "../service/ProductService";
 import { ProductList } from "../types/product";
 import { useProductFilters } from "../store/Product";
-
+import { useMemo } from "react";
 const defaultPagination = {
   hasMore: false,
   limit: 20,
   page: 1,
   totalPages: 1,
-  total: 0,
+  total: 0
 };
 
 export const useProducts = () => {
-    const { filters = {} } = useProductFilters();
+  console.log("useProducts Rerendered");
+  const { filters = {} } = useProductFilters();
+  const memoizedFilters = useMemo(() => filters, [filters]);
   const query = useQuery<ProductList, Error>({
-    queryKey: ["products",filters],
-    queryFn: () => GetProductList(filters),
+    queryKey: ["products", memoizedFilters],
+    queryFn: () => GetProductList(memoizedFilters),
     select: (data) => ({
       products: data?.products || [],
-      pagination: data?.pagination || defaultPagination,
+      pagination: data?.pagination || defaultPagination
     }),
-    staleTime: 5000,
-    placeholderData: (previousData) => previousData ?? { products: [], pagination: defaultPagination },
-
+    placeholderData: (previousData) =>
+      previousData ?? { products: [], pagination: defaultPagination }
   });
 
   return {
     ...query,
-    data: query.data ?? { products: [], pagination: defaultPagination },
+    data: query.data ?? { products: [], pagination: defaultPagination }
   };
 };
