@@ -1,81 +1,71 @@
-import { Link } from 'react-router-dom';
-import { FiHeart, FiShoppingCart } from 'react-icons/fi';
-
+import { FiHeart } from "react-icons/fi";
+import { Link } from "react-router-dom";
+import { Category } from "../../types/category";
+import { memo } from "react";
 interface ProductCardProps {
-  id: number;
+  _id: string;
   name: string;
-  brand: string;
+  slug: string;
   price: number;
-  oldPrice?: number;
-  image: string;
-  isFavorite?: boolean;
-  onAddToCart: (id: number) => void;
-  onToggleFavorite: (id: number) => void;
+  isFavorite: boolean;
+  category?: Category;
+  onAddToCart: (_id: string) => void;
+  onAddToFavorites: (_id: string) => void;
 }
 
 const ProductCard = ({
-  id,
+  _id,
   name,
-  brand,
   price,
-  oldPrice,
-  image,
+  category,
   isFavorite,
   onAddToCart,
-  onToggleFavorite
+  onAddToFavorites
 }: ProductCardProps) => {
+  console.log(`ProductCard Rerendered: ${name}`);
   return (
     <div className="bg-white rounded-lg shadow-sm overflow-hidden group">
-      <Link to={`/products/${id}`} className="block relative">
+      <Link to={`/products/${_id}`} className="relative block">
         <img
-          src={image}
+          src={
+            "https://plus.unsplash.com/premium_photo-1661769750859-64b5f1539aa8?q=80&w=1932&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+          }
           alt={name}
-          className="w-full h-64 object-cover"
+          className="w-full h-48 object-cover"
         />
-        <div className="absolute inset-0 bg-black bg-opacity-20 opacity-0 group-hover:opacity-100 transition-opacity" />
-      </Link>
 
+        <button
+          className="absolute top-2 right-2 p-1.5 rounded-full bg-white text-gray-600 hover:text-red-500"
+          onClick={(e) => {
+            e.preventDefault();
+            onAddToFavorites(_id);
+          }}
+        >
+          <FiHeart size={20} color={isFavorite ? "red" : ''} fill={isFavorite ? "red" : '#fff'} />
+        </button>
+      </Link>
       <div className="p-4">
-        <Link to={`/products/${id}`}>
-          <h3 className="font-medium mb-1 line-clamp-2 hover:text-orange-500 transition-colors">
-            {name}
-          </h3>
-        </Link>
-        <div className="text-sm text-gray-500 mb-2">{brand}</div>
-        
-        <div className="flex items-center gap-2 mb-4">
+        <h3 className="font-medium mb-1 line-clamp-2">{name}</h3>
+
+        <div className="text-sm text-gray-500 mb-2">{category?.name} </div>
+
+        <div className="flex items-center gap-2 mb-3">
           <span className="text-lg font-bold text-orange-500">
             ₺{price.toLocaleString()}
           </span>
-          {oldPrice && (
-            <span className="text-sm text-gray-500 line-through">
-              ₺{oldPrice.toLocaleString()}
-            </span>
-          )}
         </div>
-
-        <div className="flex gap-2">
-          <button 
-            onClick={() => onAddToCart(id)}
-            className="flex-1 bg-orange-500 text-white px-4 py-2 rounded-lg hover:bg-orange-600 transition-colors flex items-center justify-center gap-2"
-          >
-            <FiShoppingCart size={18} />
-            <span>Sepete Ekle</span>
-          </button>
-          <button 
-            onClick={() => onToggleFavorite(id)}
-            className={`p-2 rounded-lg transition-colors ${
-              isFavorite 
-                ? 'text-red-500 hover:bg-red-50' 
-                : 'text-gray-400 hover:bg-gray-50'
-            }`}
-          >
-            <FiHeart size={24} className={isFavorite ? 'fill-current' : ''} />
-          </button>
-        </div>
+        <button
+          className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors"
+          onClick={(e) => {
+            e.preventDefault();
+            onAddToCart(_id);
+          }}
+        >
+          Sepete Ekle
+        </button>
       </div>
     </div>
   );
 };
 
-export default ProductCard; 
+export default memo(ProductCard);

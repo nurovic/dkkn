@@ -25,6 +25,10 @@ export interface ProductList {
   products: Product[] | [];
   pagination: Pagination;
 }
+export interface ProductFavorite {
+  products: Product[] | [];
+
+}
 
 export interface ProductFilters {
   keyword?: string;

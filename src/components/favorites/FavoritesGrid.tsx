@@ -1,26 +1,25 @@
+import { Product } from '../../types/product';
 import ProductCard from '../ui/ProductCard';
-import { FavoriteItem } from '../../types/favorite';
 
-interface FavoritesGridProps {
-  favorites: FavoriteItem[];
-  onRemoveFromFavorites: (id: number) => void;
-  onAddToCart: (id: number) => void;
+interface ProductGridProps {
+  products: Product[];
+  onAddToCart: (_id: string) => void;
+  onAddToFavorites: (_id: string) => void;
 }
 
-const FavoritesGrid = ({ favorites, onRemoveFromFavorites, onAddToCart }: FavoritesGridProps) => {
+const ProductGrid = ({ products, onAddToCart, onAddToFavorites }: ProductGridProps) => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-      {favorites.map(item => (
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      {products?.map((product) => (
         <ProductCard
-          key={item.id}
-          {...item}
-          isFavorite={true}
+          key={product._id}
+          {...product}
           onAddToCart={onAddToCart}
-          onToggleFavorite={onRemoveFromFavorites}
+          onAddToFavorites={onAddToFavorites}
         />
       ))}
     </div>
   );
 };
 
-export default FavoritesGrid; 
+export default ProductGrid; 

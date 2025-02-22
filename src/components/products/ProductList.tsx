@@ -6,13 +6,12 @@ import type { FavoriteToggleType } from "../../types/favorite";
 
 import { useCallback } from "react";
 export default function ProductList() {
-    console.log("ProductList Rerendered");
+  console.log("ProductList Rerendered");
   const { data, isLoading, error } = useProducts();
   const { mutate: toggleFavorite } = useFavoriteToggle();
 
   const handleAddToCart = useCallback((id: string) => {
     console.log(`Added to cart: ${id}`);
-
   }, []);
 
   const handleAddToFavorites = useCallback((id: string) => {
