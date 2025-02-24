@@ -1,7 +1,8 @@
-import { FiHeart } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { Category } from "../../types/category";
 import { memo } from "react";
+import FavoriteButton from "./FavoriteButton";
+import AddToCart from "./AddToCart";
 interface ProductCardProps {
   _id: string;
   name: string;
@@ -9,20 +10,11 @@ interface ProductCardProps {
   price: number;
   isFavorite: boolean;
   category?: Category;
-  onAddToCart: (_id: string) => void;
-  onAddToFavorites: (_id: string) => void;
 }
 
-const ProductCard = ({
-  _id,
-  name,
-  price,
-  category,
-  isFavorite,
-  onAddToCart,
-  onAddToFavorites
-}: ProductCardProps) => {
-  console.log(`ProductCard Rerendered: ${name}`);
+const ProductCard = memo(({ _id, name, price, category, isFavorite }: ProductCardProps) => {
+
+  console.log(`ProductCard Rerendered: ${name} HER`);
   return (
     <div className="bg-white rounded-lg shadow-sm overflow-hidden group">
       <Link to={`/products/${_id}`} className="relative block">
@@ -33,16 +25,7 @@ const ProductCard = ({
           alt={name}
           className="w-full h-48 object-cover"
         />
-
-        <button
-          className="absolute top-2 right-2 p-1.5 rounded-full bg-white text-gray-600 hover:text-red-500"
-          onClick={(e) => {
-            e.preventDefault();
-            onAddToFavorites(_id);
-          }}
-        >
-          <FiHeart size={20} color={isFavorite ? "red" : ''} fill={isFavorite ? "red" : '#fff'} />
-        </button>
+        <FavoriteButton isFavorite={isFavorite} id={_id} />
       </Link>
       <div className="p-4">
         <h3 className="font-medium mb-1 line-clamp-2">{name}</h3>
@@ -54,18 +37,10 @@ const ProductCard = ({
             ₺{price.toLocaleString()}
           </span>
         </div>
-        <button
-          className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors"
-          onClick={(e) => {
-            e.preventDefault();
-            onAddToCart(_id);
-          }}
-        >
-          Sepete Ekle
-        </button>
+      <AddToCart id={_id} />
       </div>
     </div>
   );
-};
+})
 
-export default memo(ProductCard);
+export default ProductCard;

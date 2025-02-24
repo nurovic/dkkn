@@ -7,6 +7,7 @@ export const useGetFavoriteList = () => {
   const query = useQuery<ProductFavorite, Error>({  
     queryKey: ["favorites"],
     queryFn: () => GetFavoriteList(),
+    staleTime: 1000 * 60 * 5
   });
   return {
     ...query,

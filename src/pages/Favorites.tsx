@@ -2,13 +2,8 @@ import FavoritesHeader from '../components/favorites/FavoritesHeader';
 import FavoritesGrid from '../components/favorites/FavoritesGrid';
 import { useGetFavoriteList } from '../hooks/useUser';
 const Favorites = () => {
-  console.log("Favorites Rerendered");
   const {data, isLoading, error } = useGetFavoriteList();
-
-    console.log(data,"23asdasd");
-
-  const handleAddToCart = () =>{}
-  const handleAddToFavorites= () =>{}
+  console.log("Favorites Rerendered");
 
   if(isLoading) 
     return (
@@ -28,8 +23,6 @@ const Favorites = () => {
       <FavoritesHeader count={Number(data?.products?.length)} />
       <FavoritesGrid
         products={data?.products}
-        onAddToCart={handleAddToCart}
-        onAddToFavorites={handleAddToFavorites}
       />
     </div>
   );

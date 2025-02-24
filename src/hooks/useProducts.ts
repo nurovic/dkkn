@@ -18,6 +18,7 @@ export const useProducts = () => {
   const query = useQuery<ProductList, Error>({
     queryKey: ["products", memoizedFilters],
     queryFn: () => GetProductList(memoizedFilters),
+    staleTime: 1000 * 60 * 5,
     select: (data) => ({
       products: data?.products || [],
       pagination: data?.pagination || defaultPagination
