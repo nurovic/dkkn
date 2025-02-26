@@ -5,8 +5,8 @@ import {
   UseMutationResult,
   useQuery
 } from "@tanstack/react-query";
-import { GetCartList, UpdateCartProduct } from "../service/CartService";
-import { CartListType,UpdateCartQuantity } from "../types/cart";
+import { AddToCart, GetCartList, UpdateCartProduct } from "../service/CartService";
+import { AddToCartType, CartListType,UpdateCartQuantity } from "../types/cart";
 
 export const useGetCartList = () => {
   const query = useQuery<CartListType, Error>({  
@@ -69,4 +69,71 @@ export const useGetCartList = () => {
   
     return mutation;
   };
-  
+
+
+  export const useAddToCart = (): UseMutationResult<
+  CartListType, 
+  Error,        
+  AddToCartType
+> => {
+  const queryClient = useQueryClient();
+
+  const mutation = useMutation({
+    mutationFn: (body: AddToCartType) => AddToCart(body),
+
+    onMutate: async (
+      variables: AddToCartType
+    ): Promise<{ previousData?: CartListType }> => {
+      await queryClient.cancelQueries({ queryKey: ["orderCart"] });
+      const previousData = queryClient.getQueryData<CartListType>(["orderCart"]);
+
+      queryClient.setQueryData(["orderCart"], (oldData:CartListType) => {
+        if (!oldData || !oldData.items) {
+          return {
+            items: [
+              {
+                productId: variables.productId,
+                quantity: 1,
+              },
+            ],
+          } as CartListType;
+        }
+
+        const isAlreadyInCart = oldData.items.some(
+          (item) => item.productId === variables.productId
+        );
+
+        if (isAlreadyInCart) {
+          return oldData;
+        } else {
+          return {
+            ...oldData,
+            items: [
+              ...oldData.items,
+              {
+                productId: variables.productId,
+                quantity: 1,
+              },
+            ],
+          };
+        }
+      });
+
+      return { previousData };
+    },
+
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ["orderCart"],
+      });
+    },
+
+    onError: (_error, _variables, context) => {
+      if (context?.previousData) {
+        queryClient.setQueryData(["orderCart"], context.previousData);
+      }
+    }
+  });
+
+  return mutation;
+};

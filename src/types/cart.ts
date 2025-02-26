@@ -17,7 +17,9 @@ export type UpdateCartQuantity = {
     productId: string;
     quantity: number;
 }
-
+export type AddToCartType = {
+    productId: string;
+}
 export type SummaryType = {
     totalQuantity: number;
     totalPrice: number;

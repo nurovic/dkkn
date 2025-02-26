@@ -1,4 +1,4 @@
-import { useCallback, useMemo, memo } from "react";
+import { useCallback, useMemo } from "react";
 import { FiHeart } from "react-icons/fi";
 import { useFavoriteToggle } from "../../hooks/useFavorite";
 import type { FavoriteToggleType } from "../../types/favorite";
@@ -32,4 +32,4 @@ const Favorite = ({ id, isFavorite }: { id: string; isFavorite: boolean }) => {
   );
 };
 
-export default memo(Favorite);
+export default Favorite;

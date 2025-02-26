@@ -1,9 +1,11 @@
+import { memo } from "react";
 import Pagination from "../ui/Pagination";
 import { useProducts } from "../../hooks/useProducts";
-import ProductGrid from '../../components/favorites/FavoritesGrid';
+import ProductGrid from "../../components/favorites/FavoritesGrid";
 
-export default function ProductList() {
+const ProductList = () => {
   console.log("ProductList Rerendered");
+
   const { data, isLoading, error } = useProducts();
 
   if (error)
@@ -15,18 +17,16 @@ export default function ProductList() {
 
   return (
     <div className="flex-1">
-      {isLoading  ? (
+      {isLoading ? (
         <div className="min-h-screen flex items-center justify-center">
           Loading...
         </div>
       ) : (
-        <ProductGrid
-          products={data?.products}
-        />
+        <ProductGrid products={data?.products} />
       )}
-      <Pagination
-        pagination={data?.pagination}
-      />
+      <Pagination pagination={data?.pagination} />
     </div>
   );
-}
+};
+
+export default memo(ProductList);

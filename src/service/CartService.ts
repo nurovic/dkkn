@@ -1,5 +1,5 @@
 import service from "./baseUrl";
-import type { CartListType,UpdateCartQuantity } from "../types/cart";
+import type { CartListType,UpdateCartQuantity,AddToCartType } from "../types/cart";
 
 export const GetCartList = async (): Promise<CartListType> => {
   const url: string = "/cart";
@@ -15,6 +15,17 @@ export const GetCartList = async (): Promise<CartListType> => {
 export const UpdateCartProduct = async (body:UpdateCartQuantity): Promise<CartListType> => {    
   
   const url: string = "/cart/update-quantity";
+  const params = { userId: "67b865c566cb267bd954886e" };
+  body = {...body,...params}
+  const response = await service.post(url, body );
+  const cartList: CartListType = response.data;
+  
+  return cartList || [];
+}
+
+export const AddToCart = async (body:AddToCartType): Promise<CartListType> => {    
+  
+  const url: string = "/cart/add";
   const params = { userId: "67b865c566cb267bd954886e" };
   body = {...body,...params}
   const response = await service.post(url, body );

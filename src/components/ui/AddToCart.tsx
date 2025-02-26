@@ -1,14 +1,19 @@
+import { useAddToCart } from '../../hooks/useCart';
 
-function AddToCart() {
+function AddToCart({id}: {id: string}) {
+  const { mutate: handleOrderCart } =useAddToCart()
+  const onAddToCart = (id: string) => {
+    handleOrderCart({productId: id})
+  }
   return (
     <button
     className="w-full bg-orange-500 text-white py-2 rounded-lg hover:bg-orange-600 transition-colors"
     onClick={(e) => {
       e.preventDefault();
-     /* onAddToCart(id); */
+     onAddToCart(id)
     }}
   >
-    Sepete Ekle
+    Sepete Ekle 
   </button>
   )
 }

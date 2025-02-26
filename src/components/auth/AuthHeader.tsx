@@ -11,7 +11,7 @@ const AuthHeader = () => {
         <FiArrowLeft size={20} />
         <span>Ana Sayfaya Dön</span>
       </Link>
-      <Link to="/" className="text-2xl font-bold text-orange-500">
+      <Link to="/products" className="text-2xl font-bold text-orange-500">
       DucHan
       </Link>
     </div>
